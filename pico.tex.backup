@@ -1,0 +1,378 @@
+\documentclass[unknownkeysallowed,usepdftitle=false]{beamer}
+% unknownkeysallowed is needed for mac and the newer latex version -> is more picky than before...
+\usetheme[headheight=1cm,footheight=2cm]{boxes}
+%\usetheme{default}
+
+\usepackage[applemac]{inputenc}
+\usepackage{default}
+\usepackage{graphicx}
+\usepackage{epsfig}
+\usepackage{siunitx}
+\usepackage{color}
+\usepackage{ifthen}
+\usepackage{ragged2e}
+
+\setbeamertemplate{navigation symbols}{}%remove navigation symbols
+%\setbeamersize{text margin left=0pt,text margin right=0pt}
+
+% some colors
+\definecolor{grau}{gray}{.5}
+\definecolor{slfcolor}{rgb}{0,0.6274,0.8353}
+\definecolor{wslcolor}{rgb}{0,0.4,0.4}
+
+% setup links
+\hypersetup{%
+	%linkbordercolor=green,%
+	colorlinks=false,%
+	pdfborderstyle={/S/U/W 0},%
+	%pdfpagemode=FullScreen,%
+	pdfstartpage=4%
+	}
+
+% setup some fonts
+\setbeamerfont{title}{series=\bfseries, size=\small}
+\setbeamerfont{author}{size*={5pt}{0pt}}
+\setbeamerfont{institute}{size*={3pt}{0pt}}
+\setbeamerfont{bodytext}{size=\scriptsize}
+	
+% Title setup	
+\title{Slab Entrainment and Surge Dynamics of the \\ 2015 Valle\'e de la
+Sionne Avalanches}
+\author{Anselm K\"ohler\inst{1} (\texttt{koehler@slf.ch}) \and Jim
+McElwaine\inst{2} \and Betty
+Sovilla\inst{1}}
+\institute{\inst{1}Institut f\"ur Schnee- und Lawinenforschung SLF, Davos Dorf,
+Switzerland
+\quad \inst{2}Department of Earth Science, Durham University, UK}
+% add title in headbox
+\setbeamertemplate{headline}
+{\leavevmode
+\begin{beamercolorbox}[width=1\paperwidth]{head title}
+  % LOGO
+  \begin{columns}[t, totalwidth=\textwidth]
+  \begin{column}[c]{1.05cm}
+     \includegraphics[width=1cm]{figure/slf}
+  \end{column}
+  % TITLE
+   \begin{column}[c]{10.6cm}
+   \centering \usebeamerfont{title} \textcolor{slfcolor}{\inserttitle} \\
+   \centering \usebeamerfont{author} \color[rgb]{0,0,0} \insertauthor \\
+   \vspace{-0.05cm}
+   \centering \usebeamerfont{institute} \insertinstitute
+  \end{column}
+  % PICUTRE
+  \begin{column}[c]{1.15cm}
+    \hspace{0.005cm}
+    \includegraphics[width=1cm]{figure/anselm}
+  \end{column}
+  \end{columns}
+  {\color{slfcolor}\hrule height 1pt\vspace{0.1cm}}
+\end{beamercolorbox}%
+}
+
+% setup the navigation in footbox
+% first set some button colors
+\newcommand{\buttonactive}{\setbeamercolor{button}{bg=wslcolor,fg=white}}
+\newcommand{\buttonpassive}{\setbeamercolor{button}{bg=slfcolor,fg=black}}
+% now set up that the one active one gets the new color.
+\newcommand{\secvariable}{nothing}
+% therefore we write before each section (well, everything which should be part of the navi bar)
+% the variable \secvariable to any name which is in the next function ...
+\newcommand{\mysection}[1]{\renewcommand{\secvariable}{#1}
+}
+% ... compaired to strings in the following navibar definition ...
+\newcommand{\tocbuttoncolor}[1]{%
+ \ifthenelse{\equal{\secvariable}{#1}}{%
+    \buttonactive}{%
+    \buttonpassive}
+ }
+% ... here we start to set up the navibar. each entry is calling first the function \tocbuttoncolor with the argument which should be tested for beeing active. if active, then change color. afterwards the button is draw. so to change that, you need to change the argument in \toc..color, the first in \hyperlink and before each frames definition... A bit messed up, but works...
+\newlength{\buttonspacingfootline}
+\setlength{\buttonspacingfootline}{-0.2cm}
+\setbeamertemplate{footline}
+{\leavevmode
+\begin{beamercolorbox}[width=1\paperwidth]{head title}
+  {\color{slfcolor}\hrule height 1pt}
+  \vspace{0.05cm}
+  % set up the buttons in an mbox
+  \centering \mbox{
+    \tocbuttoncolor{abstract}
+    \hyperlink{abstract}{\beamerbutton{Abstract}}
+    \tocbuttoncolor{radar}
+    \hspace{\buttonspacingfootline}
+      \hyperlink{radar}{\beamerbutton{GEODAR}}
+    \tocbuttoncolor{line}
+    \hspace{\buttonspacingfootline}
+      \hyperlink{line}{\beamerbutton{Line Features}}
+    \tocbuttoncolor{major}
+    \hspace{\buttonspacingfootline}
+      \hyperlink{major}{\beamerbutton{Major Surges}}
+    \tocbuttoncolor{slab}
+    \hspace{\buttonspacingfootline}
+      \hyperlink{slab}{\beamerbutton{Slab Release}}
+    \tocbuttoncolor{minor}
+    \hspace{\buttonspacingfootline}
+      \hyperlink{minor}{\beamerbutton{Minor Surges}}
+    \tocbuttoncolor{friction}
+    \hspace{\buttonspacingfootline}
+      \hyperlink{friction}{\beamerbutton{Friction}}
+    \tocbuttoncolor{conclusion}
+    \hspace{\buttonspacingfootline}
+      \hyperlink{conclusion}{\beamerbutton{Conclusion}}
+    % this last one should normaly not be used... it will open the preferences to change the 
+    % behaviour of the acrobat reader in fullscreen -> usefull in pico...
+    \setbeamercolor{button}{bg=white,fg=black}
+    %\hspace{-0.1cm}\Acrobatmenu{FullScreenPrefs}{\beamerbutton{\#}}
+    \hspace{0.1cm}
+      \Acrobatmenu{FullScreenPrefs}{%
+      \includegraphics[height=0.9\textheight,keepaspectratio]{%
+		figure/CreativeCommons_Attribution_License}%
+	  }
+   }
+    \vspace{0.05cm}
+\end{beamercolorbox}%
+}
+
+
+\begin{document}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mysection{abstract}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}\label{\secvariable}
+\usebeamerfont{bodytext}
+\justifying
+On 3 February 2015 five avalanches were artificially released at the Valle\'e de
+la Sionne test site in the west of Switzerland. The dense parts of the
+avalanches were tracked by the GEODAR Mark 2 radar system at \SI{111}{\hertz}
+framerate with \SI{0.75}{\metre} down slope resolution.
+
+\vspace{0.2cm}
+The data show that these avalanches contain several internal surges and
+that the avalanche front is repeatedly overtaken by some of these surges. We
+show that these surges exist on different scales. While the major surges
+originate
+from secondary triggered slab releases and occur all over the avalanche, the
+minor surges are only found in the energetic part of a well developed powder
+snow avalanche. The mass of the major surges can be as huge as the initial
+released mass, this has a dramatic effect on the mass distribution inside the
+avalanche and effects the front velocity and run out. Furthermore, the secondary
+released snow slabs are an important entrainment mechanism and up to
+\SI{50}{\percent} of the mass entered the avalanche via slab entrainment.
+
+\vspace{0.2cm}
+We analyse the dynamics of the leading edge and the minor surges in more detail
+using a simple one dimensional model with frictional resistance and quadratic
+velocity dependent drag. These models fit the data well for the start and middle
+of avalanche but cannot capture the slowing and overtaking of the minor surges.
+We find much higher friction coefficients are needed to describe the surging. We propose
+that this data can only be explained by changes in the snow surface. These
+effects are not included in current models yet, but the data presented here will
+enable the development and verification of such models.
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mysection{radar}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}\label{\secvariable}
+  \begin{columns}[t]
+    \begin{column}[c]{0.5\textwidth}
+      GEODAR (FMCW radar) is installed in the valley bottom and observes the mountain to track the dense flowing core below the powder cloud.
+
+\vspace{0.2cm}
+Around \SI{100}{} radar frames are captured every second
+with a down-slope resolution of \SI{1}{\metre}.
+
+    \vspace{0.2cm}
+    The avalanche front is the change from light to red colors. 
+    
+    \vspace{0.2cm}
+    The avalanche
+approaches towards the radar (decreasing range) and the gradient of the
+line features is the approach velocity.
+    \end{column}
+    \begin{column}[c]{0.5\textwidth}
+     
+\includegraphics[width=1\textwidth,height=0.5\textheight,keepaspectratio]{%
+figure/vdls_overview}\\
+\includegraphics[width=1\textwidth,height=0.5\textheight,keepaspectratio]{%
+figure/2015-02-03-11-45-30_inkscape}
+    \end{column}
+  \end{columns}
+
+  
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mysection{line}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}\label{\secvariable}
+\begin{center}
+  \vspace{-0.5cm}
+ \includegraphics[width=1\textwidth,height=0.8\textheight,keepaspectratio]{%
+  figure/2015-02-03-11-45-30-fmcw-b_0-75m-inkscape}
+\end{center}
+  \vspace{-0.5cm}
+  \textbf{a)} GEODAR show many approaching line features\\
+  \textbf{b)} Flow-height measured by upward--looking FMCW radar.\\
+  $\quad \Rightarrow$ Line features correspond to waves: We call them surges.
+  
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mysection{major}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}\label{\secvariable} %%Eine Folie
+\begin{center}
+\includegraphics[width=1\textwidth,height=0.8\textheight,keepaspectratio]{%
+figure/2015-02-03-11-54-44_inkscape}
+\end{center}
+\begin{columns}
+\begin{column}[t]{1.1\textwidth}
+ Major surges can exist in the avalanche body and they overrun each other.\\
+ The origin of the major surges are secondary slab release (colored bars).
+\end{column}
+\end{columns}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mysection{slab}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}\label{\secvariable}
+\includegraphics[width=1\textwidth,height=0.8\textheight,keepaspectratio]{%
+figure/wave_generation}
+\begin{columns}
+\begin{column}[t]{1.1\textwidth}
+ Video and laserscan data reveal the occurrence of slab releases.\\
+ Around \SI{50}{\percent} of the total entrained volume entered the flow via
+slabs.\\
+  The slabs can be as large as the initial released slab.
+\hyperlink{slabtable}{\beamerbutton{more \dots}}
+\end{column}
+\end{columns}
+\end{frame}
+
+
+
+\begin{frame}\label{slabtable}
+\begin{columns}
+\begin{column}[t]{1.1\textwidth}
+\hyperlink{slab}{\beamerbutton{\dots back to figure}}\\
+Slabs enter at random locations into the flowing avalanche and their mass is not
+concentrated at the front.\\
+$\quad \Rightarrow$ Spreading the mass over the flow alters the runout.
+\vspace{0.3cm}
+\end{column}
+\end{columns}
+\usebeamerfont{bodytext}
+ \begin{tabular}{c|rr@{}c@{}rrrrr}
+ \setlength{\tabcolsep}{6mm}
+   & Time & \multicolumn{3}{r}{Volume} & Range & Length & Area & Depth \\
+   & [\si{\second}] & \multicolumn{3}{r}{[\si{\cubic\metre}]} & [\si{\metre}] &
+[\si{\metre}] & [\si{\square\metre}] & [\si{\metre}]\\\hline
+
+   \textbf{Avalanche~\#0019} & & $V_t$ &=& 29500 & & & 40411 & 0.73 \\
+   initial release &3.4& $V_0$ &=& 2188 & 2506 &  62 &  1400 & 1.56 \\
+   slab \#1 & 17.2    &  $V_1$ &=&  521 & 2356 &  39 &   701 & 0.74 \\
+   slab \#2 & 23.4    &  $V_2$ &=& 3503 & 2284 &  83 &  2753 & 1.28 \\
+   slab \#3 & 20--25$^*$ &  $V_3$ &=& 3345 & 2150 &  99 &  1880 & 1.78 \\
+   slab \#4 & 38.7    &  $V_4$ &=& 4276 & 1945 & 153 &  3657 & 1.17 \\
+   \\
+   \textbf{Avalanche~\#0017} & &  $V_t$ &=& 78500 & & & 82632 & 0.95\\
+   initial release&5.2&  $V_0$ &=& 15233 & 2402 & 191 & 12974 & 1.17\\
+   slab \#5 & 12.2    &  $V_5$ &=&  7620 & 2219 & 202 &  6043 & 1.26 \\
+   slab \#6 & 14.1    &  $V_6$ &=&  5868 & 2215 & 166 &  5851 & 1.01 \\
+   slab \#7 & 25.6    &  $V_7$ &=&  6307 & 1982 &  95 &  3320 & 1.90 \\
+   slab \#8 & 15--25$^*$ &  $V_8$ &=& 10663 & 1947 & 253 &  5037 & 2.12
+ \end{tabular}
+ 
+\vspace{0.2cm}
+ \textbf{Table:} Release time, Volume, Location and size parameters of all
+identified slabs.
+
+\end{frame}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mysection{minor}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}\label{\secvariable} %%Eine Folie
+\begin{center}
+\includegraphics[width=1\textwidth,height=0.7\textheight,keepaspectratio]{%
+figure/front_protection}
+\end{center}
+\vspace{-0.2cm}
+\begin{columns}
+\begin{column}[t]{1.1\textwidth}
+Minor surges are only found in the head of large powder avalanches.\\
+They are flow features (roll waves) in the energetic
+frontal region.\\
+Their speed is high and constant when behind the front, but dramatically \\
+$\quad$ decelerate as soon they overtake the leading edge.
+
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mysection{friction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}\label{\secvariable}
+\hspace{-0.6cm}
+\includegraphics[width=0.6\textwidth,height=0.7\textheight,keepaspectratio]{%
+figure/models_all}
+\includegraphics[width=1\textwidth,height=0.46\textheight,keepaspectratio]{%
+figure/mu_eff_vs_v}
+
+\begin{columns}
+\begin{column}[t]{1.1\textwidth}
+Minor surges were simulated with a 1D Voellmy--like model.\\
+Model \#1 describes the front, thats what usual models do.\\
+Model \#2 tries to follow every surge individually, but no deceleration.\\
+Model \#3 explains minor surges with 2 sets of friction
+parameters\\
+\vspace{0.2cm}
+$\Rightarrow$ The effective friction changes dramatically as soon as\\
+\raggedleft the surge reaches the front\\
+\raggedright $\Rightarrow$ The avalanche body experiences different flow
+conditions as the front.
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mysection{conclusion}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}\label{\secvariable}
+  
+  \begin{itemize}
+   \item GEODAR radar is able to track internal surges (flow height waves)
+below the powder cloud of snow avalanches.
+   Two types of surges exist: \textit{Major} and \textit{Minor surges} are
+differentiated by their length.
+  \item Major surges can occur at random location in the flow and influence the
+mass distribution of the avalanche.
+   Minor surges are ubiquitous feature of the fast--flowing energetic
+part in the frontal region of large powder avalanches. 
+  \item The effective friction between the front and the avalanche body
+differs. This must be explained with changes in the snow surface like smoothing
+and entrainment of the soft, upper snow layers. Numerical models not yet account for this.
+
+  \end{itemize}
+
+  \usebeamerfont{bodytext}
+  K\"ohler, A., J. N. McElwaine, B. Sovilla, M. Ash, P. Brennan (in Review),
+Surge dynamics of the 3 February 2015 avalanches in Valle\'e de la Sionne,
+\textit{J. Geophys. Res.} 
+  
+\end{frame}
+
+
+
+\end{document}
