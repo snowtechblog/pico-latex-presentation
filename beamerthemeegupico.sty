@@ -1,0 +1,123 @@
+\ProvidesPackage{beamerthemeegupico}
+% beamer theme for EGU Pico sessions
+% Authors: Anselm Koehler and Rolf Sander (2018)
+
+% setup some fonts:
+\setbeamerfont{normal text}{size=\small}
+\setbeamerfont{title}{series=\bfseries}
+\setbeamerfont{author}{series=\bfseries, size=\small}
+\setbeamerfont{institute}{size*={3pt}{0pt}}
+%\setbeamersize{text margin left=0pt,text margin right=0pt}
+
+% color definitions:
+\definecolor{bgcolor}{rgb}{1,1,0.9} % 252, 220, 163
+\definecolor{buttonpassivecolor}{rgb}{0,0.6274,0.8353}
+\definecolor{buttonactivecolor}{rgb}{0,0.4,0.4}
+\setbeamercolor*{normal text}{fg=black, bg=bgcolor}
+
+\usepackage{ifthen}
+\usepackage{ragged2e}
+
+
+\setbeamertemplate{navigation symbols}{}%remove navigation symbols
+
+\AtBeginDocument{
+  \usebeamerfont{normal text}
+  \justifying
+  \newwrite\copyfile  % open the file to write to
+  \immediate\openout\copyfile=picobuttons2.tex
+  \newread\file      % open the file to read from
+  \openin\file=picobuttons.tex
+  \begingroup\endlinechar=-1
+  \loop\unless\ifeof\file
+    \read\file to\fileline  % Read one line and store it into \fileline
+    \immediate\write\copyfile{\unexpanded\expandafter{\fileline}}  % print to picobuttons2.tex
+  \repeat
+  \endgroup
+  \immediate\closeout\copyfile
+  \newwrite\tempfile
+  \immediate\openout\tempfile=picobuttons.tex
+  \hypersetup{
+    pdfauthor={\shortauthor},
+    pdftitle={\shorttitle},
+    colorlinks=false}
+  }
+
+\AtEndDocument{
+  \immediate\closeout\tempfile
+  }
+
+\newcommand{\sectioninfo}{}
+\setbeamertemplate{headline}{\leavevmode
+  \begin{beamercolorbox}[width=\paperwidth]{head title}
+    \color{buttonactivecolor}\small\bf
+    \rule[-1ex]{0ex}{4ex}
+    \shorttitle:
+    \sectioninfo
+    \hfill
+    \shortauthor
+    \rule[-1ex]{0ex}{4ex}
+    {\color{buttonactivecolor}\hrule height 1pt\vspace{0.1cm}}
+  \end{beamercolorbox}%
+}
+
+% setup the navigation in footbox
+% first set some button colors
+\newcommand{\buttonactive}{\setbeamercolor{button}{bg=buttonactivecolor,fg=white}}
+\newcommand{\buttonpassive}{\setbeamercolor{button}{bg=buttonpassivecolor,fg=black}}
+% now set up that the one active one gets the new color.
+\newcommand{\secvariable}{nothing}
+% therefore we write before each section (well, everything which should
+% be part of the navi bar) the variable \secvariable to any name which
+% is in the next function ...
+% USAGE: \picosection{label}{buttontext}{sectiontitle}
+\newcommand{\picosection}[3]{%
+  \renewcommand{\secvariable}{#1}
+  \renewcommand{\sectioninfo}{#3}
+  \immediate\write\tempfile{\string\tocbuttoncolor{#1}\string\hspace{\string\buttonspacingfootline}}
+  \immediate\write\tempfile{\string\hyperlink{#1}{\string\beamerbutton{#2}}}
+  \label{\secvariable}
+}
+% ... compaired to strings in the following navibar definition ...
+\newcommand{\tocbuttoncolor}[1]{%
+  \ifthenelse{\equal{\secvariable}{#1}}{%
+    \buttonactive}{%
+    \buttonpassive}}
+% ... here we start to set up the navibar. each entry is calling first
+% the function \tocbuttoncolor with the argument which should be tested
+% for being active. if active, then change color. afterwards the button
+% is draw. so to change that, you need to change the argument in
+% \toc..color, the first in \hyperlink and before each frames
+% definition... A bit messed up, but works...
+\newlength{\buttonspacingfootline}
+\setlength{\buttonspacingfootline}{0mm}
+\setbeamertemplate{footline}
+{\leavevmode
+\begin{beamercolorbox}[width=\paperwidth]{head title}
+  {\color{buttonactivecolor}\hrule height 1pt}
+  \vspace{0.05cm}
+  % set up the buttons in an mbox
+  \centering \mbox{
+      % if you want general navigation buttons -> uncomment the following lines
+        %\tocbuttoncolor{prev}\hspace{\buttonspacingfootline}
+        %\hyperlinkslideprev{\beamerbutton{$<$}}
+        %\tocbuttoncolor{next}\hspace{\buttonspacingfootline}
+        %\hyperlinkslidenext{\beamerbutton{$>$}}
+        %\buttonpassive\Acrobatmenu{GoBack}{\beamerreturnbutton{}}
+    \IfFileExists{picobuttons2.tex}{\input{picobuttons2}}{}
+  }
+\hfill
+    % uncomment for normal button to acrobat menue
+      %\buttonpassive\Acrobatmenu{FullScreenPrefs}{\beamerbutton{\#}}
+    % have the acrobat menue hidden under the cc-logo
+    \Acrobatmenu{FullScreenPrefs}{\mbox{%
+      \includegraphics[height=0.04\textheight,keepaspectratio]{%
+        figures/CreativeCommons_Attribution_License}%
+        \hspace{0.02cm}
+        }}
+
+
+
+    \vspace{0.05cm}
+\end{beamercolorbox}%
+}
